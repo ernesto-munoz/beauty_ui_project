@@ -1,4 +1,4 @@
-# beauty_ui_project
+# Beauty UI Project in Flutter
 
 Project with various beautiful user interfaces.
 
