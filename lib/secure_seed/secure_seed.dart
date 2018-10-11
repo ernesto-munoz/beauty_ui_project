@@ -2,7 +2,6 @@ import 'package:beauty_ui_project/secure_seed/secure_seed_check.dart';
 import 'package:beauty_ui_project/secure_seed/seed_words.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'dart:io';
 
 void main() => runApp(new SecureSeed());
 

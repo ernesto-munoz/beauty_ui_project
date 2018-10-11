@@ -4,19 +4,33 @@ class CustomSlider extends StatefulWidget {
   final Color leftColor;
   final Color rightColor;
   final int maxNumPersons;
+  final double defaultSliderPercent;
+  final Function(double sliderPercent) onValueChanged;
 
-  const CustomSlider({Key key, this.leftColor, this.rightColor, this.maxNumPersons = 12}) : super(key: key);
+  const CustomSlider(
+      {Key key,
+      this.leftColor,
+      this.rightColor,
+      this.maxNumPersons = 12,
+      this.defaultSliderPercent = 0.5,
+      this.onValueChanged})
+      : super(key: key);
 
   @override
   _CustomSliderState createState() => _CustomSliderState();
 }
 
 class _CustomSliderState extends State<CustomSlider> {
-  double sliderPercent = 0.7;
-
+  double sliderPercent;
   // Dragging data
   double startDragX;
   double startDragPercent;
+
+  @override
+  void initState() {
+    super.initState();
+    sliderPercent = widget.defaultSliderPercent;
+  }
 
   void _onPanStart(DragStartDetails details) {
     startDragX = details.globalPosition.dx;
@@ -31,6 +45,7 @@ class _CustomSliderState extends State<CustomSlider> {
     setState(() {
       sliderPercent = (startDragPercent - dragPercent).clamp(1.0 / widget.maxNumPersons, 1.0);
     });
+    widget.onValueChanged(sliderPercent);
   }
 
   void _onPanEnd(DragEndDetails details) {
@@ -46,6 +61,7 @@ class _CustomSliderState extends State<CustomSlider> {
       startDragPercent = null;
       sliderPercent = closestPercentage;
     });
+    widget.onValueChanged(sliderPercent);
   }
 
   @override

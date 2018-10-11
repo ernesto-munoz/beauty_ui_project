@@ -1,3 +1,4 @@
+import 'package:beauty_ui_project/split_bill/custom_radio.dart';
 import 'package:beauty_ui_project/split_bill/custom_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -37,15 +38,21 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   // Business data
   double billAmount;
-  int numFriends;
-  double tipsPercentage;
+  double tipPercentageSelected;
+  int maxNumPersons;
+  int numPersons;
 
   // User Interface Data
+  bool insertingDecimals;
 
   @override
   void initState() {
     super.initState();
     billAmount = 0.0;
+    maxNumPersons = 12;
+    tipPercentageSelected = 0.1;
+    numPersons = (maxNumPersons * 0.5).toInt();
+    insertingDecimals = false;
   }
 
   @override
@@ -60,7 +67,7 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       body: Center(
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: <Widget>[
             buildTotalAmountBox(Color(0xFF0E1823)),
             buildNumberPersonsSlider(),
@@ -93,24 +100,55 @@ class _MyHomePageState extends State<MyHomePage> {
               ],
             )),
             Container(
-                child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: <Widget>[
-                FlatButton(
-                  child: Icon(Icons.add),
-                ),
-                buildKeyboardNumberButton(0),
-                FlatButton(
-                  child: Icon(Icons.remove),
-                  onPressed: () {
-                    setState(() {
-                      if(billAmount > 0.0)
-                        billAmount = double.parse(billAmount.toString().substring(0, billAmount.toString().length - 1));
-                    });
-                  },
-                ),
-              ],
-            )),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: <Widget>[
+                  FlatButton(
+                    child: Text(
+                      '.',
+                      style: TextStyle(fontSize: 30.0, fontWeight: FontWeight.bold),
+                    ),
+                    onPressed: () {
+                      setState(() {
+                        insertingDecimals = !insertingDecimals;
+                      });
+                    },
+                  ),
+                  buildKeyboardNumberButton(0),
+                  FlatButton(
+                    child: Icon(Icons.keyboard_arrow_left),
+                    onPressed: () {
+                      setState(() {
+                        if (billAmount > 0.0) {
+                          String asString = billAmount.toString();
+                          print(insertingDecimals);
+                          print(asString);
+                          print(asString.substring(asString.length - 2, asString.length));
+                          if (insertingDecimals == true &&
+                              asString.substring(asString.length - 2, asString.length) == '.0') {
+                            insertingDecimals = false;
+                          } else {
+                            if (insertingDecimals == true) {
+                              billAmount =
+                                  double.parse(billAmount.toString().substring(0, billAmount.toString().length - 1));
+                            } else {
+                              if (billAmount.toInt().toString().length == 1) {
+                                billAmount = 0.0;
+                              } else {
+                                billAmount = double.parse(billAmount
+                                    .toInt()
+                                    .toString()
+                                    .substring(0, billAmount.toInt().toString().length - 1));
+                              }
+                            }
+                          }
+                        }
+                      });
+                    },
+                  ),
+                ],
+              ),
+            ),
             buildSplitBillButton(),
           ],
         ),
@@ -118,7 +156,7 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
-  Padding buildSplitBillButton() {
+  Widget buildSplitBillButton() {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Container(
@@ -129,7 +167,9 @@ class _MyHomePageState extends State<MyHomePage> {
                 'SPLIT BILL',
                 style: TextStyle(color: Colors.white),
               ),
-              onPressed: () {},
+              onPressed: () {
+                print('Tip Selected: $tipPercentageSelected');
+              },
               color: Theme.of(context).primaryColor,
             )),
       ),
@@ -138,14 +178,27 @@ class _MyHomePageState extends State<MyHomePage> {
 
   Widget buildKeyboardNumberButton(int number) {
     return FlatButton(
-      child: Text(number.toString()),
+      child: Text(
+        number.toString(),
+        style: TextStyle(fontSize: 22.0),
+      ),
       onPressed: () {
         setState(() {
-          if(billAmount <= 0.0)
+          if (billAmount <= 0.0)
             billAmount = number * 1.0;
-          else
-            billAmount = double.parse(billAmount.toString() + number.toString());
+          else if (insertingDecimals == false) {
+            if (billAmount.toInt().toString().length <= 3)
+              billAmount = double.parse(billAmount.toInt().toString() + number.toString());
+          } else {
+            String decimals = billAmount.toString();
+            if (decimals[decimals.length - 1] == '0') {
+              billAmount = double.parse(decimals.substring(0, decimals.length - 1) + number.toString());
+            } else {
+              billAmount = double.parse(decimals + number.toString());
+            }
+          }
         });
+        billAmount = double.parse(billAmount.toStringAsFixed(3));
       },
     );
   }
@@ -157,25 +210,42 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
-            Radio(
-              value: 1,
-              groupValue: 1,
-              onChanged: (e) {},
+            InkWell(
+                child: new CustomRadioItem(
+                  text: '0%',
+                  isSelected: tipPercentageSelected == 0.0,
+                ),
+                onTap: () {
+                  setTipPercentageSelected(0.0);
+                }),
+            InkWell(
+              child: CustomRadioItem(
+                text: '10%',
+                isSelected: tipPercentageSelected == 0.1,
+              ),
+              onTap: () {
+                setTipPercentageSelected(0.1);
+              },
             ),
-            Radio(
-              value: 2,
-              groupValue: 2,
-              onChanged: (e) {},
+            InkWell(
+              child: CustomRadioItem(
+                text: '20%',
+                isSelected: tipPercentageSelected == 0.2,
+              ),
+              onTap: () {
+                setState(() {
+                  setTipPercentageSelected(0.2);
+                });
+              },
             ),
-            Radio(
-              value: 3,
-              groupValue: 1,
-              onChanged: (e) {},
-            ),
-            Radio(
-              value: 4,
-              groupValue: 1,
-              onChanged: (e) {},
+            InkWell(
+              child: CustomRadioItem(
+                text: '30%',
+                isSelected: tipPercentageSelected == 0.3,
+              ),
+              onTap: () {
+                setTipPercentageSelected(0.3);
+              },
             ),
           ],
         ),
@@ -183,98 +253,106 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
+  void setTipPercentageSelected(double value) {
+    setState(() {
+      tipPercentageSelected = value;
+    });
+  }
+
   Widget buildNumberPersonsSlider() {
     return Padding(
-      padding: const EdgeInsets.all(8.0),
+      padding: const EdgeInsets.all(18.0),
       child: SizedBox(
         height: 50.0,
         child: CustomSlider(
+          defaultSliderPercent: 0.5,
           leftColor: Theme.of(context).primaryColor,
           rightColor: Colors.white,
-          maxNumPersons: 12,
+          maxNumPersons: maxNumPersons,
+          onValueChanged: (value) {
+            setState(() {
+              numPersons = (value * maxNumPersons).toInt();
+            });
+          },
         ),
       ),
-//      child: Container(
-//        child: Row(
-//          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-//          children: <Widget>[
-//            Slider(
-//              value: 4.0,
-//              max: 10.0,
-//              min: 1.0,
-//            ),
-//            Text('4')
-//          ],
-//        ),
-//      ),
     );
   }
 
   Widget buildTotalAmountBox(Color backgroundColor) {
     return Padding(
-      padding: const EdgeInsets.all(16.0),
+      padding: const EdgeInsets.all(20.0),
       child: Container(
         padding: EdgeInsets.all(10.0),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(4.0),
-          color: backgroundColor,
-        ),
+        decoration:
+            BoxDecoration(borderRadius: BorderRadius.circular(4.0), color: Theme.of(context).primaryColor, boxShadow: [
+          new BoxShadow(
+            color: Colors.green,
+            blurRadius: 15.0,
+          ),
+        ]),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Text('TOTAL', style: TextStyle(fontSize: 18.0, color: Colors.white)),
-                Text('\$$billAmount',
-                    style: TextStyle(
-                        fontSize: 34.0, fontWeight: FontWeight.bold, color: Colors.white, letterSpacing: 1.5)),
-              ],
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Text('TOTAL', style: TextStyle(fontSize: 18.0, color: Colors.white)),
+                  Text(insertingDecimals == true ? '\$$billAmount' : '\$${billAmount.toInt()}',
+                      style: TextStyle(
+                          fontSize: 42.0, fontWeight: FontWeight.bold, color: Colors.white, letterSpacing: 1.5)),
+                ],
+              ),
             ),
-            Row(
-              children: <Widget>[
-                Padding(
-                  padding: const EdgeInsets.only(top: 8.0, bottom: 8.0, left: 8.0, right: 8.0),
-                  child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[
-                    Padding(
-                      padding: const EdgeInsets.only(bottom: 4.0),
-                      child: Text('BILL',
-                          style: TextStyle(fontSize: 12.0, fontWeight: FontWeight.normal, color: Colors.white)),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(bottom: 4.0),
-                      child: Text('FRIENDS',
-                          style: TextStyle(fontSize: 12.0, fontWeight: FontWeight.normal, color: Colors.white)),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(0.0),
-                      child: Text('TIPS(10%)',
-                          style: TextStyle(fontSize: 12.0, fontWeight: FontWeight.normal, color: Colors.white)),
-                    ),
-                  ]),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 8.0, bottom: 8.0, left: 8.0, right: 8.0),
-                  child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[
-                    Padding(
-                      padding: const EdgeInsets.only(bottom: 4.0),
-                      child: Text('\$80.00',
-                          style: TextStyle(fontSize: 12.0, fontWeight: FontWeight.normal, color: Colors.white)),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(bottom: 4.0),
-                      child: Text('4',
-                          style: TextStyle(fontSize: 12.0, fontWeight: FontWeight.normal, color: Colors.white)),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(0.0),
-                      child: Text('\$8.00',
-                          style: TextStyle(fontSize: 12.0, fontWeight: FontWeight.normal, color: Colors.white)),
-                    ),
-                  ]),
-                ),
-              ],
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Row(
+                children: <Widget>[
+                  Padding(
+                    padding: const EdgeInsets.only(top: 8.0, bottom: 8.0, left: 8.0, right: 8.0),
+                    child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 4.0),
+                        child: Text('BILL',
+                            style: TextStyle(fontSize: 14.0, fontWeight: FontWeight.normal, color: Colors.white)),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 4.0),
+                        child: Text('FRIENDS',
+                            style: TextStyle(fontSize: 14.0, fontWeight: FontWeight.normal, color: Colors.white)),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(0.0),
+                        child: Text('TIPS(' + (tipPercentageSelected * 100).toInt().toString() + '%)',
+                            style: TextStyle(fontSize: 14.0, fontWeight: FontWeight.normal, color: Colors.white)),
+                      ),
+                    ]),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 8.0, bottom: 8.0, left: 8.0, right: 8.0),
+                    child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 4.0),
+                        child: Text(insertingDecimals == true ? '\$$billAmount' : '\$${billAmount.toInt()}',
+                            style: TextStyle(fontSize: 14.0, fontWeight: FontWeight.normal, color: Colors.white)),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 4.0),
+                        child: Text(numPersons.toString(),
+                            style: TextStyle(fontSize: 14.0, fontWeight: FontWeight.normal, color: Colors.white)),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(0.0),
+                        child: Text('\$${(billAmount * tipPercentageSelected).toStringAsPrecision(3)}',
+                            style: TextStyle(fontSize: 14.0, fontWeight: FontWeight.normal, color: Colors.white)),
+                      ),
+                    ]),
+                  ),
+                ],
+              ),
             ),
           ],
         ),
