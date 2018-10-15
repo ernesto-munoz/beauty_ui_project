@@ -16,6 +16,20 @@ class SplitBillDivider extends StatefulWidget {
 }
 
 class _SplitBillDividerState extends State<SplitBillDivider> {
+  List<double> percentageList = [];
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    for (int i = 0; i < widget.numPersons; ++i) {
+      percentageList.add(1.0 / widget.numPersons);
+    }
+//    percentageList[2] -= 0.1;
+//    percentageList[3] += 0.1;
+    print('Percantages list: $percentageList');
+  }
+
   @override
   Widget build(BuildContext context) {
     print(widget.title);
@@ -34,13 +48,83 @@ class _SplitBillDividerState extends State<SplitBillDivider> {
           Expanded(
             child: Padding(
               padding: const EdgeInsets.only(top: 0.0, bottom: 8.0, left: 14.0, right: 14.0),
-              child: Container(color: Colors.blueAccent),
+              child: Container(
+                child: Stack(
+                  children: <Widget>[
+                    LayoutBuilder(
+                      builder: (context, constraints) {
+                        return Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: getPersonItemList(constraints),
+                        );
+                      },
+                    ),
+                    LayoutBuilder(
+                      builder: (context, constraints) {
+                        return Stack(
+                          children: getButtonSlider(constraints),
+                        );
+                      },
+                    ),
+                  ],
+                ),
+              ),
             ),
           ),
           buildEditButton(),
         ],
       ),
     );
+  }
+
+  List<Widget> getPersonItemList(BoxConstraints boxConstrains) {
+    List<Widget> listWidgets = new List();
+
+    for (int i = 0; i < widget.numPersons; ++i) {
+      listWidgets.add(PersonItem(
+          personID: 'Person $i',
+          money: widget.billAmount * percentageList[i],
+          height: boxConstrains.maxHeight * percentageList[i]));
+    }
+    return listWidgets;
+  }
+
+  List<Widget> getButtonSlider(BoxConstraints boxConstrains) {
+    List<Widget> listWidgets = new List();
+
+    double accumulativeDistance = 0.0;
+    double height = boxConstrains.maxHeight * 0.11;
+
+    for (int i = 0; i < widget.numPersons - 1; ++i) {
+      accumulativeDistance += boxConstrains.maxHeight * percentageList[i];
+
+      // Button to slide
+      listWidgets.add(
+        Positioned(
+            top: accumulativeDistance - height / 2.0,
+            right: 12.0,
+            height: height,
+            width: height,
+            child: IconButton(
+              icon: Icon(Icons.control_point),
+              iconSize: height / 2.0,
+              alignment: Alignment.center,
+            )),
+      );
+
+      // Line to slide
+      // Button to slide
+      listWidgets.add(Positioned(
+        top: accumulativeDistance - height / 2.0,
+        child: Container(
+          height: boxConstrains.maxHeight * 0.02,
+          constraints: BoxConstraints.expand(),
+          color: Colors.black87,
+        ),
+      ));
+    }
+    return listWidgets;
   }
 
   Widget buildEditButton() {
@@ -156,12 +240,39 @@ class SemiCirclePainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     Paint semiCirclePaint = Paint()..color = semiCircleColor;
-
     canvas.drawCircle(Offset(size.width / 2.0, size.height), radius, semiCirclePaint);
   }
 
   @override
   bool shouldRepaint(CustomPainter oldDelegate) {
     return true;
+  }
+}
+
+class PersonItem extends StatelessWidget {
+  final String personID;
+  final double money;
+  final double height;
+
+  const PersonItem({Key key, this.personID, this.money, this.height}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: height,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          Text(
+            '$personID',
+            style: TextStyle(fontSize: 11.0),
+          ),
+          Text(
+            '${money.toStringAsFixed(2)}\$',
+            style: TextStyle(fontSize: 23.0),
+          ),
+        ],
+      ),
+    );
   }
 }
