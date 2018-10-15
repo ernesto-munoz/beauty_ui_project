@@ -1,5 +1,6 @@
 import 'package:beauty_ui_project/split_bill/custom_radio.dart';
 import 'package:beauty_ui_project/split_bill/custom_slider.dart';
+import 'package:beauty_ui_project/split_bill/split_bill_divider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -11,6 +12,10 @@ void main() {
 
 class SplitBill extends StatelessWidget {
   // This widget is the root of your application.
+//  var _routes = <String, WidgetBuilder>{
+//    '/split_bill_divider': (BuildContext context) => new SplitBillDivider(title: 'Split Bill'),
+//  };
+
   @override
   Widget build(BuildContext context) {
     return new MaterialApp(
@@ -22,6 +27,7 @@ class SplitBill extends StatelessWidget {
         scaffoldBackgroundColor: Color(0xFFE4E8F2),
       ),
       home: new MyHomePage(title: 'Split Bill'),
+//      routes: _routes,
     );
   }
 }
@@ -157,21 +163,33 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   Widget buildSplitBillButton() {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Container(
-        child: SizedBox(
-            width: double.infinity,
-            child: RaisedButton(
-              child: Text(
-                'SPLIT BILL',
-                style: TextStyle(color: Colors.white),
-              ),
-              onPressed: () {
-                print('Tip Selected: $tipPercentageSelected');
-              },
-              color: Theme.of(context).primaryColor,
-            )),
+    return Hero(
+      tag: 'splitBillButton_hero',
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Container(
+          child: SizedBox(
+              width: double.infinity,
+              child: RaisedButton(
+                child: Text(
+                  'SPLIT BILL',
+                  style: TextStyle(color: Colors.white),
+                ),
+                onPressed: () {
+                  print('Tip Selected: $tipPercentageSelected');
+//                  Navigator.of(context).pushNamed('/split_bill_divider');
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => SplitBillDivider(
+                              title: 'Split Bill',
+                              billAmount: billAmount,
+                              numPersons: numPersons,
+                              tipPercentage: tipPercentageSelected)));
+                },
+                color: Theme.of(context).primaryColor,
+              )),
+        ),
       ),
     );
   }
@@ -261,7 +279,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   Widget buildNumberPersonsSlider() {
     return Padding(
-      padding: const EdgeInsets.all(18.0),
+      padding: const EdgeInsets.all(10.0),
       child: SizedBox(
         height: 50.0,
         child: CustomSlider(
@@ -281,7 +299,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   Widget buildTotalAmountBox(Color backgroundColor) {
     return Padding(
-      padding: const EdgeInsets.all(20.0),
+      padding: const EdgeInsets.all(10.0),
       child: Container(
         padding: EdgeInsets.all(10.0),
         decoration:

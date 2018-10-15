@@ -7,10 +7,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="6529d193-c139-4615-bd0c-8d967419a06f" name="Default" comment="">
-      <change afterPath="$PROJECT_DIR$/lib/split_bill/custom_radio.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/split_bill/split_bill_divider.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/secure_seed/secure_seed.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/secure_seed/secure_seed.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/split_bill/custom_slider.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/split_bill/custom_slider.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/split_bill/split_bill.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/split_bill/split_bill.dart" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.dart_tool/" />
@@ -26,29 +24,20 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="split_bill.dart" pinned="false" current-in-tab="true">
+      <file leaf-file-name="split_bill.dart" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/lib/split_bill/split_bill.dart">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="76">
-              <caret line="207" column="37" selection-start-line="207" selection-start-column="37" selection-end-line="207" selection-end-column="37" />
+            <state relative-caret-position="102">
+              <caret line="166" column="32" selection-start-line="166" selection-start-column="32" selection-end-line="166" selection-end-column="32" />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="custom_radio.dart" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/lib/split_bill/custom_radio.dart">
+      <file leaf-file-name="split_bill_divider.dart" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/lib/split_bill/split_bill_divider.dart">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="238">
-              <caret line="17" column="19" lean-forward="true" selection-start-line="17" selection-start-column="19" selection-end-line="17" selection-end-column="19" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="custom_slider.dart" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/lib/split_bill/custom_slider.dart">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="391">
-              <caret line="23" column="23" selection-start-line="23" selection-start-column="23" selection-end-line="23" selection-end-column="23" />
+            <state relative-caret-position="228">
+              <caret line="48" column="18" selection-start-line="48" selection-start-column="18" selection-end-line="48" selection-end-column="18" />
             </state>
           </provider>
         </entry>
@@ -74,6 +63,8 @@
       <find>maxNumPersons</find>
       <find>slider</find>
       <find>sli</find>
+      <find>Icon</find>
+      <find>pushNam</find>
     </findStrings>
     <replaceStrings>
       <replace>14.0</replace>
@@ -95,11 +86,12 @@
         <option value="$PROJECT_DIR$/lib/secure_seed/secure_seed.dart" />
         <option value="$PROJECT_DIR$/lib/split_bill/custom_radio.dart" />
         <option value="$PROJECT_DIR$/lib/split_bill/split_bill.dart" />
+        <option value="$PROJECT_DIR$/lib/split_bill/split_bill_divider.dart" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="246" />
+    <option name="x" value="74" />
     <option name="y" value="-8" />
     <option name="width" value="1400" />
     <option name="height" value="1000" />
@@ -109,6 +101,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="AndroidView" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -139,7 +132,6 @@
         <option name="show-excluded-files" value="false" />
       </pane>
       <pane id="PackagesPane" />
-      <pane id="AndroidView" />
       <pane id="Scope" />
     </panes>
   </component>
@@ -249,7 +241,14 @@
       <option name="project" value="LOCAL" />
       <updated>1539115157940</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="Split Bill: first interface done.">
+      <created>1539285137459</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1539285137459</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -263,9 +262,9 @@
       <window_info id="Build Variants" order="3" side_tool="true" />
       <window_info anchor="right" id="Capture Analysis" order="4" />
       <window_info anchor="bottom" id="Event Log" order="8" side_tool="true" />
-      <window_info active="true" anchor="bottom" id="Dart Analysis" order="7" visible="true" weight="0.32897604" />
-      <window_info anchor="bottom" id="Run" order="2" weight="0.22331154" />
+      <window_info anchor="bottom" id="Dart Analysis" order="7" weight="0.32897604" />
       <window_info anchor="bottom" id="Version Control" order="9" weight="0.32897604" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.3191721" />
       <window_info anchor="bottom" id="Terminal" order="11" />
       <window_info anchor="right" id="Flutter Outline" order="6" weight="0.32995737" />
       <window_info anchor="bottom" id="Logcat" order="10" />
@@ -276,8 +275,8 @@
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info anchor="right" id="Device File Explorer" order="5" side_tool="true" />
       <window_info anchor="right" id="Theme Preview" order="7" />
-      <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info id="Favorites" order="5" side_tool="true" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="right" id="Flutter Inspector" order="3" visible="true" weight="0.16897655" />
       <window_info active="true" anchor="bottom" id="Messages" order="13" visible="true" weight="0.38260868" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -295,7 +294,8 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Beginning the creation of the Split Bill app. Basic structure, resume box and slider working." />
-    <option name="LAST_COMMIT_MESSAGE" value="Beginning the creation of the Split Bill app. Basic structure, resume box and slider working." />
+    <MESSAGE value="Split Bill: first interface done." />
+    <option name="LAST_COMMIT_MESSAGE" value="Split Bill: first interface done." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -303,13 +303,6 @@
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/lib/split_bill/split_bill.dart">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2737">
-          <caret line="164" column="44" selection-start-line="164" selection-start-column="44" selection-end-line="164" selection-end-column="44" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/../Flutter SDK/flutter/packages/flutter/lib/src/widgets/framework.dart">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="62577">
@@ -622,24 +615,31 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/lib/split_bill/custom_slider.dart">
+    <entry file="file://$PROJECT_DIR$/lib/split_bill/custom_radio.dart">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="391">
-          <caret line="23" column="23" selection-start-line="23" selection-start-column="23" selection-end-line="23" selection-end-column="23" />
+        <state relative-caret-position="44">
+          <caret line="17" column="19" selection-start-line="17" selection-start-column="19" selection-end-line="17" selection-end-column="19" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/lib/split_bill/custom_radio.dart">
+    <entry file="file://$PROJECT_DIR$/lib/split_bill/custom_slider.dart">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="238">
-          <caret line="17" column="19" lean-forward="true" selection-start-line="17" selection-start-column="19" selection-end-line="17" selection-end-column="19" />
+        <state relative-caret-position="17">
+          <caret line="23" column="23" selection-start-line="23" selection-start-column="23" selection-end-line="23" selection-end-column="23" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/lib/split_bill/split_bill.dart">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="76">
-          <caret line="207" column="37" selection-start-line="207" selection-start-column="37" selection-end-line="207" selection-end-column="37" />
+        <state relative-caret-position="102">
+          <caret line="166" column="32" selection-start-line="166" selection-start-column="32" selection-end-line="166" selection-end-column="32" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib/split_bill/split_bill_divider.dart">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="228">
+          <caret line="48" column="18" selection-start-line="48" selection-start-column="18" selection-end-line="48" selection-end-column="18" />
         </state>
       </provider>
     </entry>
